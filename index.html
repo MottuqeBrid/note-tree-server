@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Note Tree Server</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f5f7fa;
+        color: #222;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        padding: 40px 32px;
+        max-width: 400px;
+        text-align: center;
+      }
+      h1 {
+        color: #2a7be4;
+        margin-bottom: 8px;
+      }
+      .routes {
+        margin-top: 24px;
+        text-align: left;
+      }
+      .route {
+        background: #f0f4fa;
+        border-radius: 8px;
+        padding: 10px 16px;
+        margin-bottom: 8px;
+        font-family: monospace;
+        color: #2a7be4;
+      }
+      .footer {
+        margin-top: 32px;
+        color: #888;
+        font-size: 0.95em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Note Tree Server</h1>
+      <p>Welcome to your Note Management backend server.</p>
+      <div class="routes">
+        <h3>Available Route:</h3>
+        <div class="route">GET /</div>
+        <div style="color: #888; font-size: 0.95em">
+          (Serves this landing page)
+        </div>
+      </div>
+    </div>
+    <div class="footer">&copy; 2025 Note Tree Server</div>
+  </body>
+</html>
