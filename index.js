@@ -33,7 +33,9 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.use("/api/auth", require("./router/AuthRouterRouter"));
+app.use("/api/auth", require("./router/AuthRouter"));
+app.use("/api/notes", require("./router/noteRouter"));
+app.use("/api/upload", require("./router/upload"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

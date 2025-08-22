@@ -13,27 +13,25 @@ const NoteSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    links: {
-      name: {
-        type: String,
+    links: [
+      {
+        name: { type: String },
+        url: { type: String },
       },
-      url: {
-        type: String,
+    ],
+    files: [
+      {
+        name: { type: String },
+        url: { type: String },
       },
-    },
+    ],
+
     tags: [
       {
         type: String,
       },
     ],
-    files: {
-      name: {
-        type: String,
-      },
-      url: {
-        type: String,
-      },
-    },
+
     isPinned: {
       type: Boolean,
       default: false,
