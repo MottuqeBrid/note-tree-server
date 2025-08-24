@@ -21,7 +21,7 @@ const allowedOrigins = [
   "https://note-tree-flame.vercel.app",
   "https://note-tree-server.vercel.app",
 ];
-
+app.use(cookieParser());
 app.use(
   cors({
     origin: function (origin, callback) {
