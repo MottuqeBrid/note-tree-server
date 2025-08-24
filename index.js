@@ -8,7 +8,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 
 // middleware
-app.use(cookieParser());
+
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://note-tree-flame.vercel.app"],
@@ -17,6 +17,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // database connection
