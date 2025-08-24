@@ -11,19 +11,12 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cookieParser());
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://note-tree-flame.vercel.app",
-];
-
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: ["http://localhost:3000", "https://note-tree-flame.vercel.app"],
     credentials: true,
   })
 );
-// ✅ Preflight requests handle
-app.options("*", cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
