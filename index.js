@@ -42,7 +42,8 @@ mongoose
 
 //   routes
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  // res.sendFile(__dirname + "/index.html");
+  res.send("API is running...");
 });
 
 app.use("/api/auth", require("./router/AuthRouter"));
