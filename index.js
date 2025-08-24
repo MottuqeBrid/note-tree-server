@@ -43,7 +43,7 @@ mongoose
 //   routes
 app.get("/", (req, res) => {
   // res.sendFile(__dirname + "/index.html");
-  res.send("API is running...");
+  res.json({ message: "Welcome to the Note Tree API" });
 });
 
 app.use("/api/auth", require("./router/AuthRouter"));
