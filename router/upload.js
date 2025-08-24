@@ -24,7 +24,10 @@ router.post("/files", upload.single("file"), async (req, res) => {
     // Upload file to Cloudinary
     const result = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "notes", resource_type: "raw" }, // optional: cloudinary folder
+        {
+          folder: "notes",
+          resource_type: "raw",
+        },
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
