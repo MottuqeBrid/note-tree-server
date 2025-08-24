@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://note-tree-flame.vercel.app"],
+    origin: ["https://note-tree-flame.vercel.app", "http://localhost:3000"],
     credentials: true,
   })
 );
