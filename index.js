@@ -14,6 +14,8 @@ app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:3000",
   "https://note-tree-flame.vercel.app", // frontend domain
+  "https://note-tree-flame.vercel.app",
+  "https://note-tree-server.vercel.app",
 ];
 
 app.use(
