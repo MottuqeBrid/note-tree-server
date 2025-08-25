@@ -26,7 +26,6 @@ router.post("/files", upload.single("file"), async (req, res) => {
       const stream = cloudinary.uploader.upload_stream(
         {
           folder: "notes",
-          resource_type: "raw",
         },
         (error, result) => {
           if (error) reject(error);
@@ -40,7 +39,7 @@ router.post("/files", upload.single("file"), async (req, res) => {
       success: true,
       file: {
         name: file.originalname,
-        url: result.url,
+        url: result.secure_url,
         public_id: result.public_id,
       },
     });
@@ -51,3 +50,4 @@ router.post("/files", upload.single("file"), async (req, res) => {
 });
 
 module.exports = router;
+// https://res.cloudinary.com/ddpg1myou/raw/upload/fl_attachment:file/notes/g6tdy6go4pspbykfrbpc

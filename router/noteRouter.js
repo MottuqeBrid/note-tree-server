@@ -1,13 +1,16 @@
 const express = require("express");
 const NoteSchema = require("../schema/NoteSchema");
 const { verifyToken } = require("../lib/jwt");
+const UserSchema = require("../schema/UserSchema");
 const router = express.Router();
 
 router.post("/create", verifyToken, async (req, res) => {
-  console.log("user", req.user);
   console.log("req.body", req.body);
   try {
     const newNote = await NoteSchema.create({ ...req.body, user: req.user.id });
+    await UserSchema.findByIdAndUpdate(req.user.id, {
+      $push: { note: newNote._id },
+    });
     res.status(201).json({
       success: true,
       message: "Note created successfully",
