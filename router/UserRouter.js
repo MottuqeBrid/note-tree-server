@@ -17,4 +17,19 @@ router.get("/me", verifyToken, async (req, res) => {
   }
 });
 
+router.patch("/me", verifyToken, async (req, res) => {
+  const { id } = req.user;
+  const updates = req.body;
+  console.log("Updates:", updates);
+  try {
+    const updatedUser = await UserSchema.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json({ success: true, user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
 module.exports = router;
