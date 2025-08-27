@@ -40,6 +40,7 @@ app.use("/api/auth", require("./router/AuthRouter"));
 app.use("/api/notes", require("./router/noteRouter"));
 app.use("/api/upload", require("./router/upload"));
 app.use("/api/users", require("./router/UserRouter"));
+app.use("/api/covers", require("./router/CoverRouter"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

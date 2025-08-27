@@ -38,10 +38,102 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    isPhoneVerified: {
+      type: Boolean,
+      default: false,
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female", "other"],
+      default: "other",
+    },
+    bio: {
+      type: String,
+    },
+    location: {
+      permanentAddress: {
+        type: String,
+      },
+      currentAddress: {
+        type: String,
+      },
+      country: {
+        type: String,
+        default: "Bangladesh",
+      },
+    },
+    social: {
+      facebook: {
+        type: String,
+      },
+      twitter: {
+        type: String,
+      },
+      instagram: {
+        type: String,
+      },
+      github: {
+        type: String,
+      },
+      linkedin: {
+        type: String,
+      },
+      website: {
+        type: String,
+      },
+      portfolio: {
+        type: String,
+      },
+      youtube: {
+        type: String,
+      },
+      tiktok: {
+        type: String,
+      },
+      snapchat: {
+        type: String,
+      },
+      reddit: {
+        type: String,
+      },
+      quora: {
+        type: String,
+      },
+    },
+    hobbies: {
+      type: [String],
+    },
+    education: {
+      institution: {
+        type: String,
+      },
+      degree: {
+        type: String,
+      },
+      fieldOfStudy: {
+        type: String,
+      },
+      startYear: {
+        type: Number,
+      },
+      endYear: {
+        type: Number,
+      },
+    },
     note: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Note",
     },
+    cover: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cover",
+      },
+    ],
   },
   {
     timestamps: true,
