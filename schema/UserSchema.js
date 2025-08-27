@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["user", "moderator", "admin"],
       default: "user",
     },
     phone: {
@@ -33,6 +33,14 @@ const UserSchema = new mongoose.Schema(
       cover: {
         type: String,
       },
+    },
+    deactivated: {
+      type: Boolean,
+      default: false,
+    },
+    isbanned: {
+      type: Boolean,
+      default: false,
     },
     isVerified: {
       type: Boolean,
@@ -124,14 +132,22 @@ const UserSchema = new mongoose.Schema(
         type: Number,
       },
     },
-    note: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Note",
-    },
+    note: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Note",
+      },
+    ],
     cover: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cover",
+      },
+    ],
+    image: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Image",
       },
     ],
   },

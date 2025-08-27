@@ -1,6 +1,7 @@
 const express = require("express");
 const { verifyToken } = require("../lib/jwt");
 const UserSchema = require("../schema/UserSchema");
+const { checkAdmin } = require("../middleware/checkAdmin");
 const router = express.Router();
 
 router.get("/me", verifyToken, async (req, res) => {
@@ -14,6 +15,25 @@ router.get("/me", verifyToken, async (req, res) => {
     res.status(200).json({ success: true, user });
   } catch (error) {
     res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+router.get("/middleware", verifyToken, async (req, res) => {
+  const { id } = req.user;
+  try {
+    // এখানে select ব্যবহার করো
+    const user = await UserSchema.findById(id).select(
+      "-password -__v -note -name -cover -image -location -photo "
+    );
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Server error" });
   }
 });
 
@@ -42,6 +62,47 @@ router.get("/single/:id", verifyToken, async (req, res) => {
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
     }
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+router.get("/dashboard/summary", verifyToken, async (req, res) => {
+  try {
+    const user = await UserSchema.findById(req.user.id).populate("note");
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+// admin routes
+router.get("/admin/users", verifyToken, checkAdmin, async (req, res) => {
+  try {
+    const users = await UserSchema.find();
+    res.status(200).json({ success: true, users });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+router.patch("/admin/users/:id", verifyToken, checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+  try {
+    const user = await UserSchema.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
     res.status(200).json({ success: true, user });
   } catch (error) {
     res.status(500).json({ success: false, error: "Internal server error" });
