@@ -83,7 +83,7 @@ router.get("/dashboard/summary", verifyToken, async (req, res) => {
 // admin routes
 router.get("/admin/users", verifyToken, checkAdmin, async (req, res) => {
   try {
-    const users = await UserSchema.find();
+    const users = await UserSchema.find().select("-password -__v");
     res.status(200).json({ success: true, users });
   } catch (error) {
     res.status(500).json({ success: false, error: "Internal server error" });
@@ -104,6 +104,24 @@ router.patch("/admin/users/:id", verifyToken, checkAdmin, async (req, res) => {
     }
 
     res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+router.delete("/admin/users/:id", verifyToken, checkAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await UserSchema.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ success: false, error: "Internal server error" });
   }

@@ -23,6 +23,29 @@ router.post("/create", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/my-covers", verifyToken, async (req, res) => {
+  try {
+    const user = await UserSchema.findById(req.user.id).populate("cover");
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+    res.status(200).json({ success: true, covers: user.cover });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+router.get("/all", verifyToken, async (req, res) => {
+  try {
+    const covers = await CoverSchema.find()
+      .populate("user")
+      .select("-__v -password");
+    res.status(200).json({ success: true, covers });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
 router.get("/demo", async (req, res) => {
   try {
     const demoCover = {
