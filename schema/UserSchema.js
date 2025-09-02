@@ -34,6 +34,12 @@ const UserSchema = new mongoose.Schema(
         type: String,
       },
     },
+    groups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Group",
+      },
+    ],
     deactivated: {
       type: Boolean,
       default: false,
