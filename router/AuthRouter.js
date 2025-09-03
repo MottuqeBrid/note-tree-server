@@ -22,7 +22,6 @@ router.post("/register", hashPassword, async (req, res) => {
 
     const newUser = await UserSchema.create({ ...req.body });
     const token = generateToken(newUser);
-    console.log(token);
     await TokenSchema.create({
       user: newUser._id,
       token,
@@ -64,7 +63,6 @@ router.post("/login", async (req, res) => {
         .json({ success: false, error: "Invalid credentials" });
     }
     const token = generateToken(user);
-    console.log(token);
     await TokenSchema.create({
       user: user._id,
       token,

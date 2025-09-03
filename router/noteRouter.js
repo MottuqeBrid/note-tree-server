@@ -5,7 +5,6 @@ const UserSchema = require("../schema/UserSchema");
 const router = express.Router();
 
 router.post("/create", verifyToken, async (req, res) => {
-  console.log("req.body", req.body);
   try {
     const newNote = await NoteSchema.create({ ...req.body, user: req.user.id });
     await UserSchema.findByIdAndUpdate(req.user.id, {

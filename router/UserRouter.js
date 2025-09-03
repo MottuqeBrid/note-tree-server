@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get("/me", verifyToken, async (req, res) => {
   const { id } = req.user;
-  console.log(req.user);
 
   try {
     const user = await UserSchema.findById(id)
@@ -32,7 +31,6 @@ router.get("/middleware", verifyToken, async (req, res) => {
 
     res.status(200).json({ success: true, user });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ success: false, error: "Server error" });
   }
 });
@@ -40,12 +38,10 @@ router.get("/middleware", verifyToken, async (req, res) => {
 router.patch("/me", verifyToken, async (req, res) => {
   const { id } = req.user;
   const { password, ...updates } = req.body;
-  console.log(id);
   try {
     const updatedUser = await UserSchema.findById(id);
     updatedUser.set(updates);
     await updatedUser.save();
-    console.log(updatedUser);
     res.status(200).json({ success: true, user: updatedUser });
   } catch (error) {
     res.status(500).json({ success: false, error: "Internal server error" });
@@ -122,6 +118,19 @@ router.delete("/admin/users/:id", verifyToken, checkAdmin, async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+// group router
+router.get("/groups", verifyToken, async (req, res) => {
+  try {
+    const user = await UserSchema.findById(req.user.id).populate("groups");
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+    res.status(200).json({ success: true, groups: user.groups });
   } catch (error) {
     res.status(500).json({ success: false, error: "Internal server error" });
   }

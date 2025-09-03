@@ -1,11 +1,11 @@
 const expres = require("express");
+const router = expres.Router();
+
 const { verifyToken } = require("../lib/jwt");
 const GroupSchema = require("../schema/GroupSchema");
 const UserSchema = require("../schema/UserSchema");
-const router = expres.Router();
 
 router.post("/create", verifyToken, async (req, res) => {
-  console.log("Request Body:", req.body); // Debugging line
   try {
     const user = await UserSchema.findById(req.user.id);
     if (!user) {
@@ -47,6 +47,11 @@ router.patch("/update/:id", verifyToken, async (req, res) => {
     if (!group) {
       return res.status(404).json({ success: false, error: "Group not found" });
     }
+    if (members && members.length > 0) {
+      group.members = Array.from(new Set([...group.members, ...members]));
+      await group.save();
+    }
+
     res.status(200).json({ success: true, group });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
@@ -67,6 +72,18 @@ router.delete("/delete/:id", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/get/:id", verifyToken, async (req, res) => {
+  try {
+    const group = await GroupSchema.findById(req.params.id);
+    if (!group) {
+      return res.status(404).json({ success: false, error: "Group not found" });
+    }
+    res.status(200).json({ success: true, group });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+});
+
 router.get("/all", verifyToken, async (req, res) => {
   try {
     const groups = await GroupSchema.find();
@@ -81,6 +98,32 @@ router.get("/all-users", verifyToken, async (req, res) => {
   try {
     const users = await UserSchema.find({ isDeleted: false, isBanned: false });
     res.status(200).json({ success: true, users });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+});
+
+router.patch("/leave/:groupId", verifyToken, async (req, res) => {
+  const { groupId } = req.params;
+
+  try {
+    const group = await GroupSchema.findById(groupId);
+    if (!group) {
+      return res.status(404).json({ success: false, error: "Group not found" });
+    }
+
+    // Remove user from group members
+    group.members = group.members.filter(
+      (member) => member.toString() !== req.user.id
+    );
+    await group.save();
+
+    // Remove group from user's groups
+    const user = await UserSchema.findById(req.user.id);
+    user.groups = user.groups.filter((group) => group.toString() !== groupId);
+    await user.save();
+
+    res.status(200).json({ success: true, message: "Left group successfully" });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
   }

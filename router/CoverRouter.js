@@ -2,6 +2,7 @@ const express = require("express");
 const CoverSchema = require("../schema/CoverSchema");
 const { verifyToken } = require("../lib/jwt");
 const UserSchema = require("../schema/UserSchema");
+const OtherSchema = require("../schema/OtherSchema");
 const router = express.Router();
 
 router.post("/create", verifyToken, async (req, res) => {
@@ -65,9 +66,14 @@ router.get("/demo", async (req, res) => {
       studentInstitute: "Global Tech University",
       teacherInstitute: "Global Tech University",
       coverType: "assignment",
-      Category: "design4",
+      category: "design4",
     };
-    res.status(200).json({ success: true, cover: demoCover });
+
+    const coverDemo = await OtherSchema.findOne().sort({ createdAt: -1 });
+
+    res
+      .status(200)
+      .json({ success: true, cover: coverDemo.coverDemo || demoCover });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

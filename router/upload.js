@@ -11,7 +11,6 @@ const upload = multer({ storage });
 
 // POST /upload/files
 router.post("/files", upload.single("file"), async (req, res) => {
-  console.log(req.file);
   try {
     if (!req.file) {
       return res
@@ -34,7 +33,6 @@ router.post("/files", upload.single("file"), async (req, res) => {
       );
       streamifier.createReadStream(file.buffer).pipe(stream);
     });
-    console.log(result);
     return res.status(200).json({
       success: true,
       file: {
@@ -44,7 +42,6 @@ router.post("/files", upload.single("file"), async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Upload error:", error);
     return res.status(500).json({ success: false, error: "Upload failed" });
   }
 });
