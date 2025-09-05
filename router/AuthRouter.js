@@ -29,8 +29,8 @@ router.post("/register", hashPassword, async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" || false,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+      // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
     });
     return res
       .status(201)
@@ -70,8 +70,8 @@ router.post("/login", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" || false,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+      // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
     });
 
     return res.status(200).json({ success: true, message: "Login successful" });
