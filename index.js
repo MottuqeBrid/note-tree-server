@@ -13,7 +13,12 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://note-tree-flame.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://note-tree-flame.vercel.app",
+      "https://notetree.toytree.top",
+      "https://notetree-server.toytree.top",
+    ],
     credentials: true,
   })
 );
