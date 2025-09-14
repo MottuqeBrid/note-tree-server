@@ -26,11 +26,17 @@ router.post("/register", hashPassword, async (req, res) => {
       user: newUser._id,
       token,
     });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production" || false,
+    //   // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    //   expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+    // });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" || false,
-      // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+      secure: true, // must be true in prod
+      sameSite: "none", // required for cross-domain
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return res
       .status(201)
@@ -67,11 +73,17 @@ router.post("/login", async (req, res) => {
       user: user._id,
       token,
     });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production" || false,
+    //   // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    //   expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+    // });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" || false,
-      // sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+      secure: true, // must be true in prod
+      sameSite: "none", // required for cross-domain
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     return res.status(200).json({ success: true, message: "Login successful" });
