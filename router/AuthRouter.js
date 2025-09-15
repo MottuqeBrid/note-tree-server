@@ -83,8 +83,6 @@ router.post("/login", async (req, res) => {
       httpOnly: true,
       secure: true, // must be true in prod
       sameSite: "none", // required for cross-domain
-      domain:
-        process.env.NODE_ENV === "production" ? ".toytree.top" : "localhost",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
