@@ -38,16 +38,10 @@ router.post("/register", hashPassword, async (req, res) => {
       sameSite: "none", // required for cross-domain
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    res.cookie("firstLogin", true, {
-      httpOnly: false,
-      secure: true, // must be true in prod
-      sameSite: "none", // required for cross-domain
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      ...{ domain: "localhost" }, // OR set to your API domain in prod
-    });
+
     return res
       .status(201)
-      .json({ success: true, message: "User registered successfully" });
+      .json({ success: true, token, message: "User registered successfully" });
   } catch (error) {
     return res
       .status(500)
@@ -93,7 +87,9 @@ router.post("/login", async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
-    return res.status(200).json({ success: true, message: "Login successful" });
+    return res
+      .status(200)
+      .json({ success: true, token, message: "Login successful" });
   } catch (error) {
     return res
       .status(500)
