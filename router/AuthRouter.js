@@ -34,10 +34,16 @@ router.post("/register", hashPassword, async (req, res) => {
     // });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" || false,
+      secure: true, // must be true in prod
       sameSite: "none", // required for cross-domain
-      domain: "localhost", // OR set to your API domain in prod
       maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+    res.cookie("firstLogin", true, {
+      httpOnly: false,
+      secure: true, // must be true in prod
+      sameSite: "none", // required for cross-domain
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      domain: "localhost", // OR set to your API domain in prod
     });
     return res
       .status(201)
