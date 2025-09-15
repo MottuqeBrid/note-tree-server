@@ -35,7 +35,7 @@ router.post("/register", hashPassword, async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // must be true in prod
-      // sameSite: "none", // required for cross-domain
+      sameSite: "none", // required for cross-domain
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return res
