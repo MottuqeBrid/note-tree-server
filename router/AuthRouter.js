@@ -43,7 +43,7 @@ router.post("/register", hashPassword, async (req, res) => {
       secure: true, // must be true in prod
       sameSite: "none", // required for cross-domain
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      domain: "localhost", // OR set to your API domain in prod
+      ...{ domain: "localhost" }, // OR set to your API domain in prod
     });
     return res
       .status(201)
