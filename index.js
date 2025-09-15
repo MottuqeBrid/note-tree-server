@@ -17,6 +17,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://note-tree-flame.vercel.app",
+      "https://note-tree-server.vercel.app",
       "https://notetree.toytree.top",
       "https://notetree-server.toytree.top",
     ],
