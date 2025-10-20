@@ -134,4 +134,28 @@ router.get("/profile", async (req, res) => {
   }
 });
 
+router.patch("/update-password", hashPassword, async (req, res) => {
+  const { token } = req.cookies;
+  const { password } = req.body;
+  if (!token) {
+    return res.status(401).json({ success: false, error: "Unauthorized" });
+  }
+  try {
+    const tokenData = await TokenSchema.findOne({ token });
+    if (!tokenData) {
+      return res.status(401).json({ success: false, error: "Unauthorized" });
+    }
+    const user = await UserSchema.findById(tokenData.user);
+    user.password = password;
+    await user.save();
+    return res
+      .status(200)
+      .json({ success: true, message: "Password updated successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal server error" });
+  }
+});
+
 module.exports = router;
