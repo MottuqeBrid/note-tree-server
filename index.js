@@ -12,15 +12,40 @@ const PORT = process.env.PORT || 5000;
 app.use(cookieParser());
 
 app.set("trust proxy", 1); // <--- important for proxies
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:3000",
+//       "https://note-tree-flame.vercel.app",
+//       "https://note-tree-server.vercel.app",
+//       "https://notetree.toytree.top",
+//       "https://one.toytree.top",
+//     ],
+//     credentials: true,
+//   })
+// );
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://note-tree-flame.vercel.app",
+  "https://note-tree-server.vercel.app",
+  "https://notetree.toytree.top",
+  "https://one.toytree.top",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://note-tree-flame.vercel.app",
-      "https://note-tree-server.vercel.app",
-      "https://notetree.toytree.top",
-      "https://one.toytree.top",
-    ],
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
