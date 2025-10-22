@@ -20,7 +20,6 @@ app.use(
       "https://note-tree-server.vercel.app",
       "https://notetree.toytree.top",
       "https://one.toytree.top",
-      "https://notetree-server.toytree.top",
     ],
     credentials: true,
   })
