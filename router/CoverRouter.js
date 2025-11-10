@@ -39,7 +39,7 @@ router.get("/my-covers", verifyToken, async (req, res) => {
 router.get("/all", verifyToken, async (req, res) => {
   try {
     const covers = await CoverSchema.find()
-      .populate("user", "cover")
+      .populate("user")
       .select("-__v -password");
     res.status(200).json({ success: true, covers });
   } catch (error) {
