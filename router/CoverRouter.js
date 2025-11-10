@@ -79,4 +79,28 @@ router.get("/demo", async (req, res) => {
   }
 });
 
+router.delete("/delete/:id", verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const cover = await CoverSchema.findById(id);
+    if (!cover) {
+      return res.status(404).json({ success: false, error: "Cover not found" });
+    }
+    const user = await UserSchema.findById(cover.user);
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+    if (user) {
+      user.cover.pull(cover._id);
+      await user.save();
+    }
+    await cover.remove();
+    res
+      .status(200)
+      .json({ success: true, message: "Cover deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;
