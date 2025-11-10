@@ -94,7 +94,7 @@ router.delete("/delete/:id", verifyToken, async (req, res) => {
       user.cover.pull(cover._id);
       await user.save();
     }
-    await cover.remove();
+    await CoverSchema.findByIdAndDelete(id);
     res
       .status(200)
       .json({ success: true, message: "Cover deleted successfully" });
