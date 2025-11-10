@@ -40,7 +40,8 @@ router.get("/all", verifyToken, async (req, res) => {
   try {
     const covers = await CoverSchema.find()
       .populate("user")
-      .select("-__v -password");
+      .select("-__v -password")
+      .sort({ createdAt: -1 });
     res.status(200).json({ success: true, covers });
   } catch (error) {
     res.status(500).json({ success: false, error: "Internal server error" });
